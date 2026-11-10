@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Real studies about the hours you spend staring at a screen: breaks, video calls, notifications, emails, scrolling. Each one comes with something to try at your desk, and a tag that tells you how much to trust it.">
+<link rel="icon" href="../favicon.png">
+<title>Silly Science: Screen Edition</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: lab-notebook graph paper; a filterable specimen table that folds into cards on phones, then a "graveyard" of famous flops. */
+:root {
+  --bg: #EDF1F5;
+  --paper: #FFFFFF;
+  --ink: #17203A;
+  --muted: #586179;
+  --line: #D3DAE4;
+  --grid: rgba(40, 90, 160, 0.075);
+  --accent: #C2185B;
+  --accent-ink: #FFFFFF;
+  --hl: rgba(255, 221, 87, 0.75);
+  --rep: #0F7A5E;
+  --solid: #2C59B5;
+  --small: #9A5600;
+  --dead: #7A6F86;
+  --f-display: "Shrikhand", "Cooper Black", Georgia, serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E121B; --paper: #161B27; --ink: #E5E9F2; --muted: #9AA3B9; --line: #2A3245;
+    --grid: rgba(120, 160, 230, 0.06); --accent: #FF6E9E; --accent-ink: #1A0C12;
+    --hl: rgba(255, 205, 70, 0.26); --rep: #4ED2A6; --solid: #86A9FF; --small: #F2B25E; --dead: #A99FB6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E121B; --paper: #161B27; --ink: #E5E9F2; --muted: #9AA3B9; --line: #2A3245;
+  --grid: rgba(120, 160, 230, 0.06); --accent: #FF6E9E; --accent-ink: #1A0C12;
+  --hl: rgba(255, 205, 70, 0.26); --rep: #4ED2A6; --solid: #86A9FF; --small: #F2B25E; --dead: #A99FB6;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+.wrap {
+  max-width: 1320px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+  display: grid; gap: 28px;
+}
+
+/* Header */
+header { display: grid; gap: 12px; max-width: 72ch; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent);
+}
+h1 {
+  font-family: var(--f-display); font-weight: 400; font-size: clamp(40px, 7vw, 76px);
+  line-height: 0.98; margin: 0; text-wrap: balance; letter-spacing: -0.01em;
+}
+h1 .tilt { display: inline-block; transform: rotate(-3deg); color: var(--accent); }
+.lede { font-size: 17px; margin: 0; color: var(--ink); max-width: 64ch; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.stats b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Controls */
+.controls {
+  display: grid; gap: 12px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px;
+}
+.row1 { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.search { flex: 1 1 260px; min-width: 0; }
+input[type="search"], select {
+  font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 7px; padding: 9px 11px; width: 100%;
+}
+select { width: auto; }
+.btn {
+  font: inherit; font-weight: 700; border: 0; border-radius: 7px; padding: 9px 14px; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink);
+}
+.btn:hover { filter: brightness(1.06); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font: inherit; font-size: 13px; cursor: pointer; border-radius: 999px; padding: 5px 12px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.count { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+
+/* Evidence tags */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px; border: 1px solid currentColor;
+}
+.tag.rep { color: var(--rep); background: color-mix(in srgb, var(--rep) 10%, transparent); }
+.tag.solid { color: var(--solid); background: color-mix(in srgb, var(--solid) 10%, transparent); }
+.tag.small { color: var(--small); background: color-mix(in srgb, var(--small) 10%, transparent); }
+.ig {
+  display: inline-block; font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--accent); border: 1px dashed var(--accent); border-radius: 4px; padding: 1px 6px;
+}
+
+/* Table */
+table {
+  width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+}
+thead th {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2;
+  background: var(--paper); text-align: left; vertical-align: bottom;
+  font-family: var(--f-mono); font-weight: 500; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); padding: 12px 14px; border-bottom: 2px solid var(--ink);
+}
+thead th:first-child { border-top-left-radius: 10px; }
+thead th:last-child { border-top-right-radius: 10px; }
+col.c-hack { width: 22%; } col.c-study { width: 19%; } col.c-auth { width: 12%; }
+col.c-find { width: 26%; } col.c-try { width: 21%; }
+tbody td { vertical-align: top; padding: 16px 14px; border-bottom: 1px solid var(--line); min-width: 0; overflow-wrap: anywhere; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr { transition: background-color .2s; }
+tbody tr:hover { background: color-mix(in srgb, var(--accent) 4%, transparent); }
+tbody tr.flash { animation: flash 1.8s ease-out; }
+@keyframes flash { 0%, 40% { background: color-mix(in srgb, var(--accent) 18%, transparent); } 100% { background: transparent; } }
+
+.hackin { display: grid; gap: 8px; }
+.hack .cat { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.hack strong {
+  font-size: 17px; line-height: 1.3; font-weight: 700;
+  background: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 92%, transparent 92%);
+  box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 2px;
+}
+.meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.silly { font-family: var(--f-mono); font-size: 11px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+.dots { letter-spacing: 1px; color: var(--accent); font-size: 12px; }
+.dots i { font-style: normal; color: var(--line); }
+
+.study a { color: var(--ink); text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent); text-underline-offset: 3px; font-style: italic; }
+.study a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.cite { display: block; margin-top: 6px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.study .ig { margin-top: 8px; }
+.auth { font-size: 13px; color: var(--muted); }
+.find, .try { font-size: 14.5px; }
+.note { display: block; margin-top: 8px; font-size: 13px; color: var(--muted); }
+.note::before { content: "Caveat: "; font-weight: 700; color: var(--small); }
+
+.empty { padding: 28px; text-align: center; color: var(--muted); }
+
+/* Graveyard */
+.grave { display: grid; gap: 16px; }
+.grave h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(28px, 4vw, 40px); margin: 0; line-height: 1.05; }
+.grave > p { margin: 0; max-width: 68ch; color: var(--muted); }
+.stones { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 12px; }
+.stone {
+  background: var(--paper); border: 1px dashed var(--dead); border-radius: 10px; padding: 14px 16px;
+  display: grid; gap: 6px; align-content: start; min-width: 0;
+}
+.stone .claim { font-weight: 700; text-decoration: line-through; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.stone .orig { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.stone .what { font-size: 14px; }
+.stone .instead { font-size: 13.5px; color: var(--rep); }
+.stone .instead::before { content: "Do instead: "; font-weight: 700; }
+
+footer { font-size: 13px; color: var(--muted); max-width: 80ch; display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* Phone: rows become cards */
+@media (max-width: 860px) {
+  table, thead, tbody, tr, td { display: block; width: 100%; }
+  table { background: transparent; border: 0; }
+  colgroup, thead { display: none; }
+  tbody { display: grid; gap: 12px; }
+  tbody tr { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 4px 0; }
+  tbody td { border-bottom: 0; padding: 10px 16px; }
+  tbody td[data-label]::before {
+    content: attr(data-label); display: block; margin-bottom: 3px;
+    font-family: var(--f-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+  tbody td.try { background: color-mix(in srgb, var(--hl) 35%, transparent); border-radius: 0 0 9px 9px; margin-top: 4px; padding-bottom: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  tbody tr.flash { animation: none; outline: 2px solid var(--accent); }
+  html { scroll-behavior: auto; }
+}
+.back { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-decoration: none; justify-self: start; }
+.back:hover { color: var(--accent); }
+.nav { display: flex; flex-wrap: wrap; gap: 4px 16px; justify-self: start; }
+.links { display: flex; flex-wrap: wrap; gap: 2px 10px; margin-top: 4px; font-family: var(--f-mono); font-size: 11.5px; }
+.links a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 2px; }
+.links a:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <nav class="nav" aria-label="Other editions"><a class="back" href="../">← Babastuff</a> <a class="back" href="index.html">→ Silly Science Index</a></nav>
+    <div class="eyebrow">Peer-reviewed · screen edition</div>
+    <h1>Silly Science <span class="tilt">Screen Edition</span></h1>
+    <p class="lede">Real studies about the hours you spend staring at a screen: breaks, video calls, notifications, emails, scrolling. Each one comes with something to try at your desk, and a tag that tells you how much to trust it.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="legend" aria-label="Evidence key">
+    <span><span class="tag rep">Replicated</span> independent labs found it too</span>
+    <span><span class="tag solid">Solid study</span> well designed, not yet widely repeated</span>
+    <span><span class="tag small">Small but fun</span> small sample or one lab; hold loosely</span>
+  </div>
+
+  <section class="controls" aria-label="Filter studies">
+    <div class="row1">
+      <div class="search"><input id="q" type="search" placeholder="Search: zoom, email, tiktok, nature, emoji…" aria-label="Search studies"></div>
+      <select id="ev" aria-label="Evidence filter">
+        <option value="all">Any evidence</option>
+        <option value="rep">Replicated only</option>
+        <option value="solid">Solid study or better</option>
+      </select>
+      <select id="sort" aria-label="Sort order">
+        <option value="silly">Silliest first</option>
+        <option value="evidence">Strongest evidence first</option>
+        <option value="new">Newest first</option>
+        <option value="old">Oldest first</option>
+      </select>
+      <button class="btn" id="rand" type="button">Random hack</button>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Category"></div>
+    <div class="count" id="count" aria-live="polite"></div>
+  </section>
+
+  <table>
+    <colgroup><col class="c-hack"><col class="c-study"><col class="c-auth"><col class="c-find"><col class="c-try"></colgroup>
+    <thead><tr><th scope="col">The hack</th><th scope="col">Study</th><th scope="col">Authors</th><th scope="col">What they found</th><th scope="col">Try it at your desk</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <section class="grave" aria-labelledby="grave-h">
+    <h2 id="grave-h">The graveyard</h2>
+    <p>Screen &quot;facts&quot; that get shared constantly but didn&#x27;t survive a second look.</p>
+    <div class="stones" id="stones"></div>
+  </section>
+
+  <footer>
+    <div>Paper titles link to the paper's DOI where the pipeline matched it in Crossref and OpenAlex, otherwise to a Google Scholar search. “Free copy” links to an open-access version found by OpenAlex. “Replication record” links to the FORRT replication atlas. Numbers are summarized from the papers and press coverage of them; check the original before quoting one.</div>
+    <div>Nothing here is medical advice. The Tetris-after-trauma studies in particular were run with researchers; they are not a DIY therapy.</div>
+  </footer>
+</div>
+
+<script>
+const DATA = {"cats": ["Breaks & nature", "Video calls", "Phone & feeds", "Email & texting", "Focus & work", "Mood & stress", "Sleep"], "studies": [{"cat": "Breaks & nature", "hack": "Stare at a photo of a green roof for 40 seconds", "title": "40-second green roof views sustain attention: The role of micro-breaks within attention restoration theory", "journal": "Journal of Environmental Psychology", "year": 2015, "authors": "Kate E. Lee, Kathryn J. H. Williams, Leisa D. Sargent, Nicholas S. G. Williams, Katherine A. Johnson", "ev": "small", "silly": 5, "ig": null, "find": "150 students doing a dull, attention-draining computer task got a 40-second break halfway through, looking at an image of either a flowering green roof or a bare concrete one. The green-roof group made fewer errors and kept steadier attention afterward.", "tryit": "Make your second monitor or phone lock screen a meadow, forest, or planted roof. Between tasks, look at it for 40 seconds. That's the whole hack.", "note": "One lab; the effect on errors was modest.", "url": "https://doi.org/10.1016/j.jenvp.2015.04.003", "doi": "10.1016/j.jenvp.2015.04.003", "oa": null, "atlas": null}, {"cat": "Breaks & nature", "hack": "Swap the news tab for 10 minutes of nature pictures", "title": "The cognitive benefits of interacting with nature", "journal": "Psychological Science", "year": 2008, "authors": "Marc G. Berman, John Jonides, Stephen Kaplan", "ev": "small", "silly": 4, "ig": null, "find": "In the paper's first experiment, people did better on a backwards digit-span test after a walk in a park than after a walk downtown. In the second, just viewing pictures of nature on a screen improved attention scores compared with viewing pictures of city streets.", "tryit": "When your focus is shot, a slideshow of nature photos beats scrolling a feed. Keep a folder of them for afternoon slumps.", "note": "The pictures experiment had only 12 people. The real-walk version is the stronger result.", "url": "https://doi.org/10.1111/j.1467-9280.2008.02225.x", "doi": "10.1111/j.1467-9280.2008.02225.x", "oa": null, "atlas": null}, {"cat": "Breaks & nature", "hack": "A real window beats a screen pretending to be one", "title": "A plasma display window? The shifting baseline problem in a technologically mediated natural world", "journal": "Journal of Environmental Psychology", "year": 2008, "authors": "Peter H. Kahn Jr., Batya Friedman, Brian Gill, Jennifer Hagman, Rachel L. Severson, Nathan G. Freier, et al.", "ev": "solid", "silly": 4, "ig": null, "find": "90 office workers sat facing a real window onto a nature scene, a big plasma screen showing a live HD feed of the very same view, or a blank wall. After a mild stressor, heart rates recovered faster with the real window. The screen did no better than the blank wall.", "tryit": "Nature pictures help focus, but for actually calming down, get up and look out a real window. Move your desk so you can see one if you can.", "note": "The heart-rate difference was small, about 3 beats per minute.", "url": "https://doi.org/10.1016/j.jenvp.2007.10.008", "doi": "10.1016/j.jenvp.2007.10.008", "oa": null, "atlas": null}, {"cat": "Breaks & nature", "hack": "Put a crackling fireplace video on, with the sound up", "title": "Hearth and campfire influences on arterial blood pressure: Defraying the costs of the social brain through fireside relaxation", "journal": "Evolutionary Psychology", "year": 2014, "authors": "Christopher Dana Lynn", "ev": "solid", "silly": 5, "ig": null, "find": "226 adults across three studies watched a fire video with sound, the same fire muted, or a control video. Blood pressure dropped with the crackling fire, more so the longer they watched. The silent fire and an upside-down fire didn't relax anyone.", "tryit": "Yes, the 10-hour YouTube fireplace counts. Keep the crackle on, since the sound mattered. Good for winding down after a stressful call.", "note": null, "url": "https://doi.org/10.1177/147470491401200509", "doi": "10.1177/147470491401200509", "oa": "https://doi.org/10.1177/147470491401200509", "atlas": null}, {"cat": "Breaks & nature", "hack": "Take micro-breaks without guilt", "title": "“Give me a break!” A systematic review and meta-analysis on the efficacy of micro-breaks for increasing well-being and performance", "journal": "PLoS ONE", "year": 2022, "authors": "Patricia Albulescu, Irina Macsinga, Andrei Rusu, Coralia Sulea, Alexandra Bodnaru, Bogdan Tudor Tulbure", "ev": "rep", "silly": 2, "ig": null, "find": "Pooling 22 studies, breaks of 10 minutes or less reliably raised energy and reduced fatigue. Performance gains were smaller, and grew as breaks got longer. The boost was clearer for routine clerical work than for heavy thinking tasks.", "tryit": "A few minutes away from the screen every hour is not slacking. For deep work, plan a longer break instead of many tiny ones.", "note": null, "url": "https://doi.org/10.1371/journal.pone.0272460", "doi": "10.1371/journal.pone.0272460", "oa": "https://doi.org/10.1371/journal.pone.0272460", "atlas": null}, {"cat": "Mood & stress", "hack": "Watch cat videos, and stop feeling guilty about it", "title": "Emotion regulation, procrastination, and watching cat videos online: Who watches Internet cats, why, and to what effect?", "journal": "Computers in Human Behavior", "year": 2015, "authors": "Jessica Gall Myrick", "ev": "small", "silly": 5, "ig": null, "find": "Nearly 7,000 people answered a survey about their cat-video habits. They said watching left them more energetic and positive and less anxious, annoyed, and sad. Many admitted they were procrastinating, but the pleasure outweighed the guilt.", "tryit": "A two-minute cat video between tasks is a legitimate mood reset. Set a timer, because \"one more\" is how the procrastination part happens.", "note": "Self-reported survey, not an experiment; the sample was recruited through cat-loving social media.", "url": "https://doi.org/10.1016/j.chb.2015.06.001", "doi": "10.1016/j.chb.2015.06.001", "oa": null, "atlas": null}, {"cat": "Mood & stress", "hack": "Open a folder of puppy photos before detailed work", "title": "The power of kawaii: Viewing cute images promotes a careful behavior and narrows attentional focus", "journal": "PLoS ONE", "year": 2012, "authors": "Hiroshi Nittono, Michiko Fukushima, Akihiro Yano, Hiroki Moriya", "ev": "solid", "silly": 5, "ig": null, "find": "After viewing photos of puppies and kittens, students did about 44% better on a fiddly tweezers game, versus 12% better after photos of adult dogs and cats. They also got faster and more accurate at finding a target number in a grid.", "tryit": "Before proofreading a contract or checking a spreadsheet, spend 60 seconds on baby animals. Adult animals don't work as well.", "note": null, "url": "https://doi.org/10.1371/journal.pone.0046362", "doi": "10.1371/journal.pone.0046362", "oa": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0046362&type=printable", "atlas": null}, {"cat": "Mood & stress", "hack": "Make your partner your lock screen before the dentist", "title": "A picture's worth: Partner photographs reduce experimentally induced pain", "journal": "Psychological Science", "year": 2009, "authors": "Sarah L. Master, Naomi I. Eisenberger, Shelley E. Taylor, Bruce D. Naliboff, David Shirinyan, Matthew D. Lieberman", "ev": "small", "silly": 5, "ig": null, "find": "Women in a long-term relationship received painful heat on their arm. Looking at a photo of their boyfriend lowered pain ratings compared with a stranger's photo or an object, and worked about as well as actually holding his hand.", "tryit": "Before an injection, a hard workout, or a painful appointment, pull up a photo of someone you love and look at it during the uncomfortable part.", "note": "Only 25 participants, all women.", "url": "https://doi.org/10.1111/j.1467-9280.2009.02444.x", "doi": "10.1111/j.1467-9280.2009.02444.x", "oa": null, "atlas": null}, {"cat": "Mood & stress", "hack": "Two minutes of doomscrolling is enough to sour your mood", "title": "Brief exposure to social media during the COVID-19 pandemic: Doom-scrolling has negative emotional consequences, but kindness-scrolling does not", "journal": "PLoS ONE", "year": 2021, "authors": "Kathryn Buchanan, Lara B. Aknin, Shaaba Lotun, Gillian M. Sandstrom", "ev": "solid", "silly": 4, "ig": null, "find": "People who spent just 2 to 4 minutes scrolling COVID news on Twitter or YouTube felt worse right afterward. People who scrolled through stories of strangers being kind to each other felt no worse, and sometimes better.", "tryit": "If you're going to scroll, aim it at something kind or funny. Follow a few accounts that post good news, so your feed isn't all bad news.", "note": null, "url": "https://doi.org/10.1371/journal.pone.0257728", "doi": "10.1371/journal.pone.0257728", "oa": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0257728&type=printable", "atlas": null}, {"cat": "Mood & stress", "hack": "Screen time is about as bad for teens as eating potatoes", "title": "The association between adolescent well-being and digital technology use", "journal": "Nature Human Behaviour", "year": 2019, "authors": "Amy Orben, Andrew K. Przybylski", "ev": "solid", "silly": 5, "ig": null, "find": "Analyzing three huge datasets covering over 350,000 teenagers, technology use explained at most 0.4% of the differences in their well-being. Eating potatoes regularly showed a similarly sized link. Being bullied or not sleeping enough mattered far more.", "tryit": "Don't panic about the total hours. Ask what the screen time is replacing (sleep, friends, exercise) and what's actually on the screen.", "note": "This measures links in survey data, not cause. It doesn't mean specific apps can't harm specific people.", "url": "https://doi.org/10.1038/s41562-018-0506-1", "doi": "10.1038/s41562-018-0506-1", "oa": "https://ora.ox.ac.uk/objects/uuid:5d844350-a359-47d3-b10c-4bfb93ce613b/files/m1139efb332d78a15e737adf5b68292a6", "atlas": null}, {"cat": "Mood & stress", "hack": "Play Tetris after a really bad day", "title": "Can playing the computer game “Tetris” reduce the build-up of flashbacks for trauma? A proposal from cognitive science", "journal": "PLoS ONE", "year": 2009, "authors": "Emily A. Holmes, Ella L. James, Thomas Coode-Bate, Catherine Deeprose", "ev": "rep", "silly": 5, "ig": null, "find": "People watched a distressing film, then either played Tetris for 10 minutes or sat quietly. The Tetris group had fewer intrusive flashbacks of the film over the next week. A 2018 hospital trial with car-crash survivors found the same.", "tryit": "After something upsetting, a visual puzzle game can keep the image from replaying in your head. It's not a substitute for support or professional care after real trauma.", "note": null, "url": "https://doi.org/10.1371/journal.pone.0004153", "doi": "10.1371/journal.pone.0004153", "oa": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0004153&type=printable", "atlas": null}, {"cat": "Phone & feeds", "hack": "Play 3 minutes of Tetris when a craving hits", "title": "Playing Tetris decreases drug and other cravings in real world settings", "journal": "Addictive Behaviors", "year": 2015, "authors": "Jessica Skorka-Brown, Jackie Andrade, Ben Whalley, Jon May", "ev": "small", "silly": 4, "ig": null, "find": "Students texted 7 times a day for a week. After 3 minutes of Tetris, their cravings for food, coffee, cigarettes, alcohol, and sex dropped from about 70% to 56% intensity.", "tryit": "Keep a block-stacking game on your phone for snack attacks at your desk. It occupies the mental imagery that cravings run on.", "note": "Only 31 participants.", "url": "https://doi.org/10.1016/j.addbeh.2015.07.020", "doi": "10.1016/j.addbeh.2015.07.020", "oa": "http://hdl.handle.net/10026.1/3458", "atlas": null}, {"cat": "Phone & feeds", "hack": "Turn your phone grayscale", "title": "True colors: Grayscale setting reduces screen time in college students", "journal": "The Social Science Journal", "year": 2020, "authors": "Alex J. Holte, F. Richard Ferraro", "ev": "rep", "silly": 3, "ig": null, "find": "Students who switched their phones to black-and-white for about a week cut screen time by roughly 38 minutes a day, mostly from social media and browsing. A follow-up study also found less anxiety and problematic phone use.", "tryit": "iPhone: Settings, Accessibility, Display, Color Filters, Grayscale. Bind it to a triple-click so you can flip back for photos.", "note": null, "url": "https://doi.org/10.1080/03623319.2020.1737461", "doi": "10.1080/03623319.2020.1737461", "oa": null, "atlas": null}, {"cat": "Phone & feeds", "hack": "Cap each social app at 10 minutes a day", "title": "No more FOMO: Limiting social media decreases loneliness and depression", "journal": "Journal of Social and Clinical Psychology", "year": 2018, "authors": "Melissa G. Hunt, Rachel Marx, Courtney Lipson, Jordyn Young", "ev": "solid", "silly": 3, "ig": null, "find": "143 students either used Facebook, Instagram, and Snapchat normally or limited each to 10 minutes a day for 3 weeks. The limited group reported significantly less loneliness and depression, especially those who started out more depressed.", "tryit": "Set a 10-minute daily limit per app in Screen Time or Digital Wellbeing. You don't have to quit, just shrink it.", "note": null, "url": "https://doi.org/10.1521/jscp.2018.37.10.751", "doi": "10.1521/jscp.2018.37.10.751", "oa": null, "atlas": null}, {"cat": "Phone & feeds", "hack": "Deactivate Facebook for a month (they paid people to)", "title": "The welfare effects of social media", "journal": "American Economic Review", "year": 2020, "authors": "Hunt Allcott, Luca Braghieri, Sarah Eichmeyer, Matthew Gentzkow", "ev": "solid", "silly": 4, "ig": null, "find": "Thousands of users were paid to deactivate Facebook for 4 weeks before the 2018 US midterms. They gained about an hour a day, felt slightly happier, and became less politically polarized, though they also knew less news. Many kept using it less after the study ended.", "tryit": "Try a 30-day deactivation of your most time-eating app, then decide if you want it back. People in the study often didn't miss it as much as they expected.", "note": null, "url": "https://doi.org/10.1257/aer.20190658", "doi": "10.1257/aer.20190658", "oa": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20190658", "atlas": null}, {"cat": "Phone & feeds", "hack": "TikTok makes you forget what you meant to do", "title": "Short-form videos degrade our capacity to retain intentions: Effect of context switching on prospective memory", "journal": "CHI Conference on Human Factors in Computing Systems", "year": 2023, "authors": "Francesco Chiossi, Luke Haliburton, Changkun Ou, Andreas Butz, Albrecht Schmidt", "ev": "small", "silly": 4, "ig": null, "find": "People had to remember to do something later in a task. Between phases they rested, browsed Twitter, watched YouTube, or scrolled TikTok. Only TikTok hurt their ability to remember the intention. The authors blame the rapid switching between short videos.", "tryit": "Write down what you were about to do before opening a short-video app on a break. Or take breaks with something that doesn't shuffle your brain every 15 seconds.", "note": "60 participants, one lab, no replication yet.", "url": "https://doi.org/10.1145/3544548.3580778", "doi": "10.1145/3544548.3580778", "oa": "https://dl.acm.org/doi/pdf/10.1145/3544548.3580778", "atlas": null}, {"cat": "Phone & feeds", "hack": "Silence notifications, don't just ignore them", "title": "The attentional cost of receiving a cell phone notification", "journal": "Journal of Experimental Psychology: Human Perception and Performance", "year": 2015, "authors": "Cary Stothart, Ainsley Mitchum, Courtney Yehnert", "ev": "solid", "silly": 3, "ig": null, "find": "212 students did a focus-heavy computer task. Some got calls or texts during it, which they didn't answer. Just hearing the notification hurt their performance about as much as actually using a phone.", "tryit": "Ignoring the buzz doesn't stop the damage. Turn on Do Not Disturb or a Focus mode during deep work so the ping never happens.", "note": null, "url": "https://doi.org/10.1037/xhp0000100", "doi": "10.1037/xhp0000100", "oa": null, "atlas": null}, {"cat": "Video calls", "hack": "Turn your camera off sometimes", "title": "The fatiguing effects of camera use in virtual meetings: A within-person field experiment", "journal": "Journal of Applied Psychology", "year": 2021, "authors": "Kristen M. Shockley, Allison S. Gabriel, Daron Robertson, Christopher C. Rosen, Nitya Chawla, Mahira L. Ganster, Maira E. Ezerins", "ev": "solid", "silly": 3, "ig": null, "find": "103 remote employees spent two weeks with cameras on and two weeks with cameras off in meetings. Cameras-on days were more tiring, and the fatigue made them speak up and engage less in meetings. The effect was stronger for women and newer employees.", "tryit": "Make cameras optional for internal meetings and recurring check-ins. Turn yours off for a meeting or two a day if you're drained.", "note": null, "url": "https://doi.org/10.1037/apl0000948", "doi": "10.1037/apl0000948", "oa": null, "atlas": null}, {"cat": "Video calls", "hack": "Hide self-view so you're not staring at your own face", "title": "Video-conferencing usage dynamics and nonverbal mechanisms exacerbate Zoom Fatigue, particularly for women", "journal": "Computers in Human Behavior Reports", "year": 2023, "authors": "Géraldine Fauville, Mufan Luo, Anna C. M. Queiroz, Anna Lee, Jeremy N. Bailenson, Jeffrey Hancock", "ev": "solid", "silly": 4, "ig": null, "find": "In a survey of about 10,000 people, the biggest single driver of Zoom fatigue was \"mirror anxiety\": the stress of seeing your own face all meeting. It was stronger for women, and explained a large part of why women reported more fatigue.", "tryit": "In Zoom, right-click your video and choose Hide self view. In Meet and Teams, minimize your own tile. Check yourself once, then hide.", "note": "Survey data, so it shows links rather than proving cause.", "url": "https://doi.org/10.1016/j.chbr.2023.100271", "doi": "10.1016/j.chbr.2023.100271", "oa": "https://doi.org/10.1016/j.chbr.2023.100271", "atlas": null}, {"cat": "Video calls", "hack": "Brainstorm away from the screen", "title": "Virtual communication curbs creative idea generation", "journal": "Nature", "year": 2022, "authors": "Melanie S. Brucks, Jonathan Levav", "ev": "solid", "silly": 3, "ig": null, "find": "Pairs brainstorming over video came up with fewer creative ideas than pairs in the same room. Eye-tracking showed video pairs stared at the screen, while in-person pairs looked around the room more, which went with more ideas. A field study of 1,490 engineers in five countries matched it. Picking the best idea was no worse on video.", "tryit": "Do idea generation in person or with cameras off and eyes wandering. Save video calls for deciding between ideas, which video handled fine.", "note": null, "url": "https://doi.org/10.1038/s41586-022-04643-y", "doi": "10.1038/s41586-022-04643-y", "oa": null, "atlas": null}, {"cat": "Video calls", "hack": "Put a houseplant or bookshelf behind you", "title": "Virtual first impressions: Zoom backgrounds affect judgements of trust and competence", "journal": "PLoS ONE", "year": 2023, "authors": "Abi Cook, Meg Thompson, Paddy Ross", "ev": "small", "silly": 4, "ig": null, "find": "167 people rated faces placed in front of different video-call backgrounds. Faces in front of houseplants or a bookcase were judged the most trustworthy and competent. Living-room and novelty backgrounds (like a beach or space) scored worst. Smiling helped too.", "tryit": "For interviews and client calls, sit in front of a plant or a bookshelf, or use one as a virtual background. Save the outer-space background for friends.", "note": "Used still images, not live calls.", "url": "https://doi.org/10.1371/journal.pone.0291444", "doi": "10.1371/journal.pone.0291444", "oa": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0291444&type=printable", "atlas": null}, {"cat": "Email & texting", "hack": "Check email 3 times a day, not 15", "title": "Checking email less frequently reduces stress", "journal": "Computers in Human Behavior", "year": 2015, "authors": "Kostadin Kushlev, Elizabeth W. Dunn", "ev": "solid", "silly": 3, "ig": null, "find": "124 adults spent one week checking email only 3 times a day and another week checking as often as they liked (normally about 15 times a day). They felt less stressed on the limited week, and didn't feel any less productive.", "tryit": "Close the email tab. Set three check-in times (say 9, 1, 4:30) and turn off email notifications in between.", "note": "Most people found it hard; the limited group averaged closer to 4.5 checks a day.", "url": "https://doi.org/10.1016/j.chb.2014.11.005", "doi": "10.1016/j.chb.2014.11.005", "oa": null, "atlas": null}, {"cat": "Email & texting", "hack": "Drop the period at the end of a text", "title": "Texting insincerely: The role of the period in text messaging", "journal": "Computers in Human Behavior", "year": 2016, "authors": "Danielle N. Gunraj, April M. Drumm-Hewitt, Erica M. Dashow, Sri Siddhi N. Upadhyay, Celia M. Klin", "ev": "solid", "silly": 5, "ig": null, "find": "126 students read short exchanges like \"Want to come over?\" \"Okay.\" When the one-word reply ended with a period, it came across as less sincere. The same period on a handwritten note made no difference.", "tryit": "In casual texts, \"Okay\" reads friendlier than \"Okay.\" The team's follow-up found an exclamation point makes a reply seem more sincere.", "note": null, "url": "https://doi.org/10.1016/j.chb.2015.11.003", "doi": "10.1016/j.chb.2015.11.003", "oa": null, "atlas": null}, {"cat": "Email & texting", "hack": "No smileys in a first work email", "title": "The dark side of a smiley: Effects of smiling emoticons on virtual first impressions", "journal": "Social Psychological and Personality Science", "year": 2018, "authors": "Ella Glikson, Arik Cheshin, Gerben A. van Kleef", "ev": "solid", "silly": 4, "ig": null, "find": "549 people in 29 countries read work emails from strangers. A real smile in a photo made the sender seem friendlier and more competent. A :) in a formal email made them seem less competent and didn't make them seem any warmer.", "tryit": "Leave the emoji out of the first few emails with a new client or boss. Once you know them, the rules loosen.", "note": "The paper also reported that people wrote less detailed replies to smiley emails. A 2023 preregistered replication of that experiment (Lai & Mayiwar, Collabra) didn't find it.", "url": "https://doi.org/10.1177/1948550617720269", "doi": "10.1177/1948550617720269", "oa": "https://pure.uva.nl/ws/files/30232658/1948550617720269.pdf", "atlas": "https://forrt.org/flora-replication-atlas/doi/10.1177/1948550617720269/"}, {"cat": "Focus & work", "hack": "Light mode for proofreading", "title": "Positive display polarity is advantageous for both younger and older adults", "journal": "Ergonomics", "year": 2013, "authors": "Cosima Piepenbrock, Susanne Mayr, Iris Mund, Axel Buchner", "ev": "solid", "silly": 3, "ig": null, "find": "Younger and older adults proofread text in dark-on-light (light mode) or light-on-dark (dark mode). Both age groups caught more errors in light mode. A follow-up found the advantage grows as the font gets smaller.", "tryit": "Keep dark mode for comfort at night, but flip to light mode, and bump up the font size, when you need to catch typos.", "note": null, "url": "https://doi.org/10.1080/00140139.2013.790485", "doi": "10.1080/00140139.2013.790485", "oa": null, "atlas": null}, {"cat": "Focus & work", "hack": "Work to coffee-shop noise, not silence", "title": "Is noise always bad? Exploring the effects of ambient noise on creative cognition", "journal": "Journal of Consumer Research", "year": 2012, "authors": "Ravi Mehta, Rui (Juliet) Zhu, Amar Cheema", "ev": "solid", "silly": 4, "ig": null, "find": "Across five experiments, people were more creative with background chatter at a moderate 70 dB, about a busy café, than at a quiet 50 dB. At a loud 85 dB, creativity dropped.", "tryit": "For brainstorming, play a café-ambience track at moderate volume. For detail work, go quieter.", "note": "No direct replication found yet.", "url": "https://doi.org/10.1086/665048", "doi": "10.1086/665048", "oa": null, "atlas": null}, {"cat": "Focus & work", "hack": "Some web surfing at work makes you more productive", "title": "Freedom to surf: The positive effects of workplace Internet leisure browsing", "journal": "New Technology, Work and Employment", "year": 2011, "authors": "Brent L. S. Coker", "ev": "small", "silly": 4, "ig": null, "find": "In a survey of office workers, people who browsed the web for fun at work, as long as it took under about 20% of their time, reported higher productivity, about 9% in press coverage, than those who didn't. The author argues short browsing breaks restore attention.", "tryit": "A few minutes of guilt-free browsing between tasks is fine. Past roughly a fifth of your day, it stops helping.", "note": "Survey data; the 9% figure comes from press coverage, not the abstract.", "url": "https://doi.org/10.1111/j.1468-005x.2011.00272.x", "doi": "10.1111/j.1468-005x.2011.00272.x", "oa": null, "atlas": null}, {"cat": "Focus & work", "hack": "Video gamers make better keyhole surgeons", "title": "The impact of video games on training surgeons in the 21st century", "journal": "Archives of Surgery", "year": 2007, "authors": "James C. Rosser Jr., Paul J. Lynch, Laurie Cuddihy, Douglas A. Gentile, Jonathan Klonsky, Ronald Merrell", "ev": "small", "silly": 5, "ig": null, "find": "33 surgeons did a laparoscopic surgery simulator. Those who had played video games over 3 hours a week made 37% fewer errors and worked 27% faster than those who never played. Gaming predicted skill better than years of training.", "tryit": "Hand-eye games aren't a total waste of time. If your job is screen-and-joystick (drones, CAD, editing), a little gaming may keep the skills sharp.", "note": "Small and correlational: surgeons who game may differ in other ways.", "url": "https://doi.org/10.1001/archsurg.142.2.181", "doi": "10.1001/archsurg.142.2.181", "oa": null, "atlas": null}, {"cat": "Focus & work", "hack": "Your laptop distracts the person behind you", "title": "Laptop multitasking hinders classroom learning for both users and nearby peers", "journal": "Computers & Education", "year": 2013, "authors": "Faria Sana, Tina Weston, Nicholas J. Cepeda", "ev": "solid", "silly": 4, "ig": null, "find": "Students listened to a lecture while some were assigned to do online side tasks. Multitaskers scored about 11% lower on a test. Students who simply sat where they could see a multitasker's screen scored about 17% lower, without realizing they were distracted.", "tryit": "In meetings and lectures, sit where you can't see other people's screens. And if you're scrolling, sit at the back.", "note": null, "url": "https://doi.org/10.1016/j.compedu.2012.10.003", "doi": "10.1016/j.compedu.2012.10.003", "oa": "https://www.sciencedirect.com/science/article/pii/S0360131512002254/pdf", "atlas": null}, {"cat": "Focus & work", "hack": "Hunt for one kind of mistake at a time", "title": "The invisible gorilla strikes again: Sustained inattentional blindness in expert observers", "journal": "Psychological Science", "year": 2013, "authors": "Trafton Drew, Melissa L.-H. Võ, Jeremy M. Wolfe", "ev": "rep", "silly": 5, "ig": null, "find": "Radiologists searching lung CT scans for cancer nodules were shown a scan with a gorilla 48 times bigger than a typical nodule pasted in. 20 of 24 (83%) didn't report it, and eye-tracking showed most who missed it had looked right at it.", "tryit": "When reviewing a doc or code on screen, you'll miss whatever you aren't looking for. Do separate passes: one for numbers, one for typos, one for \"does this make sense?\"", "note": null, "url": "https://doi.org/10.1177/0956797613479386", "doi": "10.1177/0956797613479386", "oa": "https://www.ncbi.nlm.nih.gov/pmc/articles/3964612", "atlas": null}, {"cat": "Sleep", "hack": "Read a paper book in bed, not a tablet", "title": "Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness", "journal": "PNAS", "year": 2015, "authors": "Anne-Marie Chang, Daniel Aeschbach, Jeanne F. Duffy, Charles A. Czeisler", "ev": "small", "silly": 3, "ig": null, "find": "In a sleep lab, people read on an iPad or a printed book for 4 hours before bed, five nights in a row each. With the iPad they made less melatonin, took about 10 minutes longer to fall asleep, got less REM sleep, and were groggier the next morning.", "tryit": "Make the last half hour before bed paper-only. A Kindle without a backlight counts as paper.", "note": "12 people, and 4 hours of reading a night is more than most of us do.", "url": "https://doi.org/10.1073/pnas.1418490112", "doi": "10.1073/pnas.1418490112", "oa": "https://www.pnas.org/content/pnas/112/4/1232.full.pdf", "atlas": null}, {"cat": "Sleep", "hack": "Night Shift won't save your sleep; putting the phone down might", "title": "Does iPhone Night Shift mitigate negative effects of smartphone use on sleep outcomes in emerging adults?", "journal": "Sleep Health", "year": 2021, "authors": "Kara M. Duraccio, Kathleen K. Zaugg, Rebecca C. Blackburn, Chad D. Jensen", "ev": "solid", "silly": 3, "ig": null, "find": "167 young adults spent a week using their iPhone in the hour before bed with Night Shift on, with it off, or not using their phone at all. Night Shift made no difference to sleep. For people already sleeping about 7 hours, skipping the phone entirely helped most.", "tryit": "The orange tint is fine, but it isn't the fix. Charge the phone across the room and give yourself a phone-free last hour.", "note": null, "url": "https://doi.org/10.1016/j.sleh.2021.03.005", "doi": "10.1016/j.sleh.2021.03.005", "oa": null, "atlas": null}], "grave": [{"claim": "Just having your phone on the desk drains your brainpower", "orig": "Ward, Duke, Gneezy & Bos, Journal of the Association for Consumer Research, 2017", "what": "A preregistered direct replication (Ruiz Pardo & Minda, Acta Psychologica, 2022) found no difference whether the phone was on the desk, in a bag, or in another room. Other attempts have also come up empty.", "instead": "Silence notifications. That part held up.", "atlas": "https://forrt.org/flora-replication-atlas/doi/10.1086/691462/"}, {"claim": "Taking notes by hand beats typing on a laptop", "orig": "Mueller & Oppenheimer, Psychological Science, 2014", "what": "A direct replication (Morehead, Dunlosky & Rawson, 2019) and a larger one (Urry et al., 2021) found little or no difference in what students learned.", "instead": "Use whichever you'll actually review. Just close the other tabs.", "atlas": "https://forrt.org/flora-replication-atlas/doi/10.1177/0956797614524581/"}, {"claim": "Blue-light glasses prevent eye strain", "orig": "Widely marketed", "what": "A 2023 Cochrane review of 17 trials found that blue-light-filtering lenses made little or no difference to eye strain from screens.", "instead": "Look away from the screen regularly and blink.", "atlas": null}, {"claim": "Humans now have a shorter attention span than a goldfish", "orig": "Microsoft Canada consumer report, 2015", "what": "The \"8 seconds vs. 9 seconds\" stat came from a website with no traceable original study, and goldfish attention has never been measured that way.", "instead": "Attention depends on the task, not a fixed number of seconds.", "atlas": null}, {"claim": "A red screen sharpens detail work and a blue one boosts creativity", "orig": "Mehta & Zhu, Science, 2009", "what": "Later direct replications, including Steele (2014), failed to find the color effect on task performance.", "instead": "Use coffee-shop noise for creative work, from the same lead author.", "atlas": null}, {"claim": "Brain-training games make you smarter", "orig": "Lumosity and similar apps", "what": "A major 2016 review (Simons et al.) found people get better at the games but rarely at anything else. Lumosity paid a $2 million FTC settlement over its advertising that year.", "instead": "Learn something you actually want to be good at.", "atlas": null}], "graveStat": "debunked screen myths"};
+const S = DATA.studies, GRAVE = DATA.grave, CATS = DATA.cats;
+const EVW = { rep: 3, solid: 2, small: 1 };
+const EVL = { rep: "Replicated", solid: "Solid study", small: "Small but fun" };
+const TRY = document.querySelector("thead th:last-child").textContent;
+let cat = "All";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const dots = (n) => "●".repeat(n) + "<i>" + "●".repeat(5 - n) + "</i>";
+
+function rowHTML(s, i) {
+  const links = [s.oa && `<a href="${esc(s.oa)}" target="_blank" rel="noopener">Free copy</a>`,
+                 s.atlas && `<a href="${esc(s.atlas)}" target="_blank" rel="noopener">Replication record</a>`].filter(Boolean);
+  return `<tr id="s${i}">
+    <td class="hack" data-label="The hack"><div class="hackin">
+      <span class="cat">${s.cat}</span>
+      <strong>${s.hack}</strong>
+      <span class="meta"><span class="tag ${s.ev}">${EVL[s.ev]}</span><span class="silly" aria-label="Silliness ${s.silly} of 5">Silliness <span class="dots" aria-hidden="true">${dots(s.silly)}</span></span></span>
+    </div></td>
+    <td class="study" data-label="Study">
+      <a href="${esc(s.url)}" target="_blank" rel="noopener">${s.title}</a>
+      <span class="cite">${s.journal}, ${s.year}</span>
+      ${s.ig ? `<span class="ig">${s.ig}</span>` : ""}
+      ${links.length ? `<span class="links">${links.join("")}</span>` : ""}
+    </td>
+    <td class="auth" data-label="Authors">${s.authors}</td>
+    <td class="find" data-label="What they found">${s.find}${s.note ? `<span class="note">${s.note}</span>` : ""}</td>
+    <td class="try" data-label="${esc(TRY)}">${s.tryit}</td>
+  </tr>`;
+}
+
+function render() {
+  const q = $("q").value.trim().toLowerCase();
+  const ev = $("ev").value;
+  const sort = $("sort").value;
+  const list = S.map((s, i) => ({ s, i })).filter(({ s }) => {
+    if (cat !== "All" && s.cat !== cat) return false;
+    if (ev === "rep" && s.ev !== "rep") return false;
+    if (ev === "solid" && EVW[s.ev] < 2) return false;
+    if (q && ![s.hack, s.title, s.authors, s.find, s.tryit, s.journal, s.cat, s.ig || ""].join(" ").toLowerCase().includes(q)) return false;
+    return true;
+  });
+  list.sort({
+    silly: (a, b) => b.s.silly - a.s.silly || EVW[b.s.ev] - EVW[a.s.ev],
+    evidence: (a, b) => EVW[b.s.ev] - EVW[a.s.ev] || b.s.silly - a.s.silly,
+    new: (a, b) => b.s.year - a.s.year,
+    old: (a, b) => a.s.year - b.s.year
+  }[sort]);
+  $("rows").innerHTML = list.length
+    ? list.map(({ s, i }) => rowHTML(s, i)).join("")
+    : `<tr><td colspan="5" class="empty">No studies match. Try a different word or clear the filters.</td></tr>`;
+  $("count").textContent = `Showing ${list.length} of ${S.length} studies`;
+  return list;
+}
+
+function buildChips() {
+  $("chips").innerHTML = ["All", ...CATS].map(c => {
+    const n = c === "All" ? S.length : S.filter(s => s.cat === c).length;
+    return `<button type="button" class="chip" aria-pressed="${c === cat}" data-cat="${esc(c)}">${c} <span aria-hidden="true">· ${n}</span></button>`;
+  }).join("");
+  $("chips").querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+    cat = b.dataset.cat;
+    $("chips").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+    render();
+  }));
+}
+
+function buildStats() {
+  const rep = S.filter(s => s.ev === "rep").length;
+  const ig = S.filter(s => s.ig).length;
+  const years = S.map(s => s.year);
+  $("stats").innerHTML = `<span><b>${S.length}</b> studies</span><span><b>${rep}</b> replicated</span>${ig ? `<span><b>${ig}</b> Ig Nobel winners</span>` : ""}<span><b>${GRAVE.length}</b> ${DATA.graveStat}</span><span>Oldest <b>${Math.min(...years)}</b> · newest <b>${Math.max(...years)}</b></span>`;
+}
+
+function buildGrave() {
+  $("stones").innerHTML = GRAVE.map(g => `<div class="stone">
+    <div class="claim">${g.claim}</div>
+    <div class="orig">${g.orig}</div>
+    <div class="what">${g.what}</div>
+    <div class="instead">${g.instead}</div>
+    ${g.atlas ? `<span class="links"><a href="${esc(g.atlas)}" target="_blank" rel="noopener">Replication record</a></span>` : ""}
+  </div>`).join("");
+}
+
+$("q").addEventListener("input", render);
+$("ev").addEventListener("change", render);
+$("sort").addEventListener("change", render);
+$("rand").addEventListener("click", () => {
+  let list = render();
+  if (!list.length) { cat = "All"; $("q").value = ""; $("ev").value = "all"; buildChips(); list = render(); }
+  const pick = list[Math.floor(Math.random() * list.length)];
+  const el = $("s" + pick.i);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+});
+
+buildChips(); buildStats(); buildGrave(); render();
+</script>
+
+</body>
+</html>
