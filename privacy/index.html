@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy | Babastuff</title>
+<meta name="description" content="CapFlow privacy policy.">
+<link rel="icon" href="../favicon.png">
+<style>
+  :root { --bg:#f6f6f8; --card:#ffffff; --text:#16161a; --muted:#5d5d66; --line:#e3e3e8; --accent:#3b6cf6; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font:17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:56px 16px 40px; }
+  header { font-weight:700; font-size:20px; letter-spacing:-.01em; margin-bottom:40px; }
+  header a { color:inherit; text-decoration:none; }
+  article { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:28px; overflow-wrap:anywhere; }
+  h1 { font-size:28px; line-height:1.2; margin:0 0 8px; letter-spacing:-.02em; }
+  h2 { font-size:20px; margin:32px 0 10px; letter-spacing:-.01em; }
+  p { margin:0 0 14px; }
+  ul { margin:0 0 14px; padding-left:22px; }
+  ul ul { margin:6px 0 0; }
+  li { margin:6px 0; }
+  em { color:var(--muted); font-style:normal; }
+  a { color:var(--accent); }
+  footer { margin-top:40px; color:var(--muted); font-size:14px; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <header><a href="../">Babastuff</a></header>
+  <article>
+<h1>CapFlow privacy policy</h1>
+<p><em>Last updated: 10 November 2026</em></p>
+<p>CapFlow is a Chrome extension that shows a YouTube video's captions as a line on the video. This policy covers what it handles, where that goes, and why. It is published by Babastuff. Contact: <a href="mailto:support@babastuff.com">support@babastuff.com</a>.</p>
+<p><strong>In short:</strong> captions, the videos you watch and your settings stay on your computer. CapFlow has no analytics, no ads and no account of its own, and nothing is sold. The only server it contacts besides YouTube is ExtensionPay, which handles the optional payment.</p>
+<h2>What CapFlow handles on your computer</h2>
+<ul><li>
+<strong>Captions of the video you're watching.</strong> CapFlow downloads the video's caption file from youtube.com, as YouTube's own player does, and shows it on the video. To be allowed to download it, it briefly turns YouTube's captions on, then puts your caption setting back. The captions, the video's ID and your viewing history are not sent to the developer or anyone else.
+</li><li>
+<strong>The video's thumbnail.</strong> The popup shows it, loaded from YouTube's image server (i.ytimg.com).
+</li><li>
+<strong>Your settings:</strong> on or off, text size, transparency and position. These are stored in Chrome's extension storage on your computer.
+</li><li>
+<strong>Free time used:</strong> how many seconds of captions you've watched, so the free hour can end. This is kept in Chrome's synced extension storage. If you sync Chrome with your Google account, Chrome syncs it between your computers the same way it syncs other extension data. The developer never receives it.
+</li></ul>
+<h2>ExtensionPay and Stripe (payments)</h2>
+<p>CapFlow uses ExtensionPay (extensionpay.com) to sell its one-time upgrade. Payments are processed by Stripe.</p>
+<ul><li>
+<strong>On first use</strong>, CapFlow asks ExtensionPay for a random key that identifies this installation, and stores it in Chrome's extension storage. It sends nothing about you to get it.
+</li><li>
+<strong>When Chrome starts, when CapFlow is installed, and when you open its popup</strong>, CapFlow sends that key to ExtensionPay to ask whether this installation has been paid for. Like any web request, ExtensionPay sees your IP address.
+</li><li>
+<strong>If you choose to pay</strong>, ExtensionPay's and Stripe's own pages open in a new tab. You enter your email address and card details there, not in CapFlow.
+<ul><li>
+Stripe processes the card. Neither CapFlow nor its developer ever sees your card number.
+</li><li>
+The developer receives the record of the purchase from ExtensionPay and Stripe: your email address, the amount, the date and the country. It is used to provide what you bought, answer support and refund requests, and meet tax and accounting duties.
+</li></ul>
+</li><li>
+<strong>"Restore your purchase"</strong> opens ExtensionPay's sign-in page, where you confirm your email address to link this installation to your earlier payment.
+</li></ul>
+<p>More about ExtensionPay: <a href="https://extensionpay.com">https://extensionpay.com</a>. Stripe's privacy policy: <a href="https://stripe.com/privacy">https://stripe.com/privacy</a>.</p>
+<h2>What CapFlow doesn't do</h2>
+<ul><li>
+It doesn't collect, sell or share your browsing activity, viewing history or captions.
+</li><li>
+It doesn't use your data for advertising, for creditworthiness or lending, or for anything unrelated to showing captions and handling your purchase.
+</li><li>
+It doesn't run on any site other than youtube.com.
+</li><li>
+It doesn't load or run code from the internet. All of its code ships inside the extension.
+</li></ul>
+<p>The use of information received from Chrome APIs follows the <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq">Chrome Web Store User Data Policy</a>, including its Limited Use requirements.</p>
+<h2>Keeping and deleting data</h2>
+<ul><li>
+<strong>On your computer:</strong> uninstalling CapFlow deletes its local data. The synced free-time counter and ExtensionPay's synced keys are kept by Chrome sync until removed from your Google account's synced data.
+</li><li>
+<strong>Purchase records:</strong> kept as long as tax and accounting law requires.
+</li><li>
+<strong>Your rights:</strong> you can ask the developer at <a href="mailto:support@babastuff.com">support@babastuff.com</a> for a copy of your purchase record, or to correct or delete it, subject to legal retention duties. If you're in the EU or UK you may also complain to your data protection authority.
+</li></ul>
+<h2>Children</h2>
+<p>CapFlow is not directed at children under 13, and the upgrade is for adults or with a parent's permission.</p>
+<h2>Changes</h2>
+<p>If this policy changes, the new version will be posted at this address with a new date. Material changes will be noted in the extension's release notes.</p>
+  </article>
+  <footer>
+    <a href="../">Home</a> &middot; <a href="../terms/">Terms</a> &middot; <a href="../privacy/">Privacy</a> &middot; <a href="mailto:support@babastuff.com">support@babastuff.com</a>
+  </footer>
+</main>
+</body>
+</html>
