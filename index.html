@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Babastuff</title>
+<meta name="description" content="Babastuff makes CapFlow, a Chrome extension that shows YouTube captions in a floating liquid-glass window.">
+<link rel="icon" href="favicon.png">
+<style>
+  :root { --bg:#f6f6f8; --card:#ffffff; --text:#16161a; --muted:#5d5d66; --line:#e3e3e8; --accent:#3b6cf6; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font:17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width:640px; margin:0 auto; padding:56px 16px 40px; }
+  header { font-weight:700; font-size:20px; letter-spacing:-.01em; margin-bottom:48px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:28px; }
+  .app { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+  .app img { width:64px; height:64px; border-radius:14px; }
+  h1 { font-size:28px; line-height:1.2; margin:0; letter-spacing:-.02em; }
+  .tag { color:var(--muted); margin:2px 0 0; }
+  p { margin:0 0 14px; }
+  ul { margin:0 0 14px; padding-left:20px; }
+  li { margin:4px 0; }
+  .note { color:var(--muted); font-size:15px; margin:0; }
+  a { color:var(--accent); }
+  footer { margin-top:40px; color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+  <header>Babastuff</header>
+
+  <section class="card">
+    <div class="app">
+      <img src="capflow.png" alt="CapFlow logo" width="64" height="64">
+      <div>
+        <h1>CapFlow</h1>
+        <p class="tag">Glass captions for YouTube</p>
+      </div>
+    </div>
+    <p>CapFlow is a Chrome extension that shows a YouTube video's captions in a floating liquid-glass window you can drag anywhere on the video. It's built for deaf and hard-of-hearing viewers, and anyone who wants captions that are easier to follow.</p>
+    <ul>
+      <li>Move, resize and restyle the caption window.</li>
+      <li>Captions are read and shown on your device only.</li>
+      <li>Your first hour is free. After that, Lifetime Access is a one-time payment of $24.99.</li>
+    </ul>
+    <p class="note">Coming soon to the Chrome Web Store.</p>
+  </section>
+
+  <footer>
+    Support and questions: <a href="mailto:support@babastuff.com">support@babastuff.com</a><br>
+    &copy; 2026 Babastuff
+  </footer>
+</main>
+</body>
+</html>
