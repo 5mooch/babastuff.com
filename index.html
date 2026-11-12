@@ -4,51 +4,85 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Babastuff</title>
-<meta name="description" content="Babastuff makes CapFlow, a Chrome extension that shows YouTube captions in a floating liquid-glass window.">
+<meta name="description" content="Babastuff makes CapFlow, a Chrome extension that lets you move YouTube captions anywhere on the screen, plus the Silly Science Index.">
 <link rel="icon" href="favicon.png">
+<link rel="canonical" href="https://babastuff.com/">
 <style>
   :root { --bg:#f6f6f8; --card:#ffffff; --text:#16161a; --muted:#5d5d66; --line:#e3e3e8; --accent:#3b6cf6; }
   @media (prefers-color-scheme: dark) {
-    :root { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
+    :root:not([data-theme="light"]) { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
   }
+  :root[data-theme="dark"] { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--text);
          font:17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  main { max-width:640px; margin:0 auto; padding:56px 16px 40px; }
-  header { font-weight:700; font-size:20px; letter-spacing:-.01em; margin-bottom:48px; }
+  main { max-width:980px; margin:0 auto; padding:56px 16px 40px; }
+  header.site { font-weight:700; font-size:20px; letter-spacing:-.01em; margin-bottom:40px; }
+  .layout { display:grid; gap:40px; }
+  @media (min-width:860px) { .layout { grid-template-columns:minmax(0,1fr) 280px; align-items:start; } }
+  h2.section { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
+               color:var(--muted); margin:0 0 14px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:28px; }
   .app { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
-  .app img { width:64px; height:64px; border-radius:14px; }
-  h1 { font-size:28px; line-height:1.2; margin:0; letter-spacing:-.02em; }
+  .app img { width:64px; height:64px; border-radius:14px; flex:none; }
+  h3 { font-size:28px; line-height:1.2; margin:0; letter-spacing:-.02em; }
+  h3 a { color:inherit; text-decoration:none; }
+  h3 a:hover { text-decoration:underline; }
   .tag { color:var(--muted); margin:2px 0 0; }
   p { margin:0 0 14px; }
-  ul { margin:0 0 14px; padding-left:20px; }
+  ul { margin:0 0 18px; padding-left:20px; }
   li { margin:4px 0; }
-  .note { color:var(--muted); font-size:15px; margin:0; }
   a { color:var(--accent); }
-  footer { margin-top:40px; color:var(--muted); font-size:14px; }
+  .actions { display:flex; flex-wrap:wrap; gap:10px; }
+  .btn { display:inline-block; padding:10px 16px; border-radius:999px; font-weight:600; font-size:15px;
+         text-decoration:none; border:1px solid var(--line); color:var(--text); }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color:#0f0f12; } }
+  :root[data-theme="dark"] .btn.primary { color:#0f0f12; }
+  aside .card { padding:22px; }
+  aside h3 { font-size:20px; margin-bottom:8px; }
+  aside p { font-size:15px; color:var(--muted); }
+  aside .more { font-size:15px; font-weight:600; }
+  footer { margin-top:56px; color:var(--muted); font-size:14px; }
 </style>
 </head>
 <body>
 <main>
-  <header>Babastuff</header>
+  <header class="site">Babastuff</header>
 
-  <section class="card">
-    <div class="app">
-      <img src="capflow.png" alt="CapFlow logo" width="64" height="64">
-      <div>
-        <h1>CapFlow</h1>
-        <p class="tag">Glass captions for YouTube</p>
-      </div>
-    </div>
-    <p>CapFlow is a Chrome extension that shows a YouTube video's captions in a floating liquid-glass window you can drag anywhere on the video. It's built for deaf and hard-of-hearing viewers, and anyone who wants captions that are easier to follow.</p>
-    <ul>
-      <li>Move, resize and restyle the caption window.</li>
-      <li>Captions are read and shown on your device only.</li>
-      <li>Your first hour is free. After that, Lifetime Access is a one-time payment of $24.99.</li>
-    </ul>
-    <p class="note">Coming soon to the Chrome Web Store.</p>
-  </section>
+  <div class="layout">
+    <section aria-labelledby="ext">
+      <h2 class="section" id="ext">Chrome extensions</h2>
+      <article class="card">
+        <div class="app">
+          <img src="capflow.png" alt="CapFlow logo" width="64" height="64">
+          <div>
+            <h3><a href="capflow/">CapFlow</a></h3>
+            <p class="tag">Move YouTube captions anywhere on the screen</p>
+          </div>
+        </div>
+        <p>CapFlow takes a YouTube video's captions off the bottom of the screen and shows them as a floating liquid-glass line you can drag anywhere on the video. It's built for deaf and hard-of-hearing viewers, and anyone who wants captions that are easier to follow.</p>
+        <ul>
+          <li>Move, resize and restyle the caption line.</li>
+          <li>Captions are read and shown on your device only.</li>
+          <li>Your first hour is free. After that, Lifetime Access is a one-time payment of $24.99.</li>
+        </ul>
+        <div class="actions">
+          <a class="btn primary" href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">Add to Chrome</a>
+          <a class="btn" href="capflow/">Learn more &amp; FAQ</a>
+        </div>
+      </article>
+    </section>
+
+    <aside aria-labelledby="side">
+      <h2 class="section" id="side">Side projects</h2>
+      <article class="card">
+        <h3><a href="silly-science/">Silly Science Index</a></h3>
+        <p>Real psychology papers with ridiculous premises and data that mostly holds up, each turned into something you can try this week.</p>
+        <a class="more" href="silly-science/">Browse the index &rarr;</a>
+      </article>
+    </aside>
+  </div>
 
   <footer>
     Support and questions: <a href="mailto:support@babastuff.com">support@babastuff.com</a><br>
