@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CapFlow: Move YouTube Captions Anywhere on Screen</title>
+<meta name="description" content="CapFlow is a Chrome extension that moves YouTube captions off the bottom of the screen into a floating glass line you can drag anywhere on the video. Answers to common caption placement questions.">
+<link rel="icon" href="../favicon.png">
+<link rel="canonical" href="https://babastuff.com/capflow/">
+<style>
+  :root { --bg:#f6f6f8; --card:#ffffff; --text:#16161a; --muted:#5d5d66; --line:#e3e3e8; --accent:#3b6cf6; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
+  }
+  :root[data-theme="dark"] { --bg:#0f0f12; --card:#18181d; --text:#f2f2f5; --muted:#a2a2ad; --line:#2a2a31; --accent:#7b9dff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font:17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:40px 16px 40px; }
+  nav.crumbs { font-size:14px; color:var(--muted); margin-bottom:32px; }
+  nav.crumbs a { color:var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:28px; }
+  .app { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+  .app img { width:64px; height:64px; border-radius:14px; flex:none; }
+  h1 { font-size:30px; line-height:1.2; margin:0; letter-spacing:-.02em; }
+  .tag { color:var(--muted); margin:2px 0 0; }
+  p { margin:0 0 14px; }
+  ul { margin:0 0 18px; padding-left:20px; }
+  li { margin:4px 0; }
+  a { color:var(--accent); }
+  .btn { display:inline-block; padding:10px 16px; border-radius:999px; font-weight:600; font-size:15px;
+         text-decoration:none; background:var(--accent); color:#fff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color:#0f0f12; } }
+  :root[data-theme="dark"] .btn { color:#0f0f12; }
+  h2 { font-size:24px; letter-spacing:-.01em; margin:48px 0 6px; }
+  .lede { color:var(--muted); margin-bottom:20px; }
+  details { background:var(--card); border:1px solid var(--line); border-radius:14px; margin:0 0 10px; }
+  summary { cursor:pointer; padding:16px 20px; font-weight:600; list-style:none; position:relative; padding-right:48px; }
+  summary::-webkit-details-marker { display:none; }
+  summary::after { content:"+"; position:absolute; right:20px; top:13px; font-size:22px; color:var(--muted); font-weight:400; }
+  details[open] summary::after { content:"\2212"; }
+  summary h4 { display:inline; font-size:inherit; margin:0; }
+  h3.group { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.08em;
+             color:var(--muted); margin:32px 0 12px; }
+  .answer { padding:0 20px 6px; }
+  .answer p { margin:0 0 12px; }
+  kbd { font:13px/1 ui-monospace, Menlo, monospace; border:1px solid var(--line); border-radius:5px;
+        padding:2px 6px; background:var(--bg); }  footer { margin-top:56px; color:var(--muted); font-size:14px; }
+</style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Can you change where captions appear on the screen on YouTube?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Only a little. YouTube's caption options let you change the font, color, size and background, but there's no setting for position: captions sit near the bottom of the video. On a computer you can drag the captions to another spot with your mouse, but YouTube doesn't keep that as a setting.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> adds the missing control. It shows the captions as one floating glass line that you place anywhere on the video, by dragging it in a preview or with a position slider, and it stays where you put it for every video.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I move captions on YouTube?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>On youtube.com in a computer browser, click and hold the captions while the video plays and drag them where you want. That only lasts for what you're watching; it isn't a saved setting.<\/p><p>For a position that sticks, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">install CapFlow<\/a>: open its toolbar popup, drag the caption in the preview or use the position slider, and every video uses that spot.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I move captions to the top of my YouTube video?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>YouTube has no “captions on top” option. On a computer you can drag the captions up to the top of the player by hand for the video you're watching.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> puts its caption line at the top right of the video by default, clear of the bottom of the frame where on-screen text, scores and name titles usually sit. You can move it anywhere else from its popup.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why are YouTube subtitles in the middle of the screen?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Some caption tracks carry their own position. Broadcast-style captions, common on YouTube TV and on uploads of TV shows, and some uploaded subtitle files tell the player where to draw each line, so they can land mid-screen over faces or the action. YouTube doesn't let viewers override that.<\/p><p>On youtube.com videos, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> ignores where the track wants the text and draws its caption line wherever you've put it. Turn YouTube's own CC off and only CapFlow's line shows.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I move captions in the YouTube app on iPhone or Android?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>The YouTube app has no caption position setting on iPhone or Android. You can change caption size and style, but not where they sit.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> is a Chrome extension for computers, so it doesn't run in the phone app. If you watch on a laptop or desktop, it lets you place captions anywhere on the video.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I move closed captions on YouTube TV?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>YouTube TV has no caption position setting. Live TV captions come from the broadcaster with their own placement, which is why they sometimes sit in the middle or at the top of the screen.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> runs on youtube.com, not YouTube TV, so it can't change those. For regular YouTube videos on a computer, it lets you choose exactly where captions go.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where are YouTube's caption settings?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>On a computer, start a video, click the Settings gear in the player, choose <strong>Subtitles/CC<\/strong>, then <strong>Options<\/strong>. There you can change the font, font color and size, background and window color and opacity, and the character edge style. Account-wide options, like always showing captions, are in your YouTube settings under <strong>Playback and performance<\/strong>.<\/p><p>Position isn't one of them. That's what <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> adds, along with its own text size and a glass background that runs from frosted to clear.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I change caption size on YouTube on a PC?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Click the Settings gear in the player, choose <strong>Subtitles/CC<\/strong> &rarr; <strong>Options<\/strong>, and change <strong>Font size<\/strong> (50% to 400%). You can also press <kbd>+<\/kbd> and <kbd>-<\/kbd> while captions are on.<\/p><p>With <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a>, the text size slider in its popup sets the size of its caption line, with a live preview, and you can move the line off the bottom of the video too.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I change caption size on YouTube mobile?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>On Android, open the YouTube app's Settings and tap <strong>Captions<\/strong>; it opens Android's caption preferences, where you set text size and style. On iPhone, caption style comes from iOS: <strong>Settings &rarr; Accessibility &rarr; Subtitles &amp; Captioning &rarr; Style<\/strong>.<\/p><p>On a computer, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> gives you a size slider and also lets you move the captions anywhere on the video.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I change the color of captions on YouTube?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>In the player, click Settings &rarr; <strong>Subtitles/CC<\/strong> &rarr; <strong>Options<\/strong> and change <strong>Font color<\/strong>, <strong>Background color<\/strong> and <strong>Window color<\/strong>. YouTube offers white, yellow, green, cyan, blue, magenta, red and black.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> takes a different approach: white text with a dark halo on a pane of liquid glass, so it stays readable on bright and dark scenes without a solid black box covering the picture.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why do I have captions on my YouTube, and why do they keep turning on?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Usually because <strong>Always show captions<\/strong> is on in your YouTube settings (Playback and performance), or because your phone or TV has captions turned on in its accessibility settings, which YouTube follows. Turn off whichever is on, then press the CC button once on a video.<\/p><p>If you want captions but find them in the way at the bottom of the screen, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> lets you move them somewhere that works for you.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I turn off auto captions in the YouTube app?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>While a video plays, tap the player, then tap <strong>CC<\/strong> (or open the gear or &#8942; menu &rarr; Captions &rarr; Turn off captions). If they come back on every video, turn captions off in the app's Settings &rarr; Captions on Android, or in iOS Settings &rarr; Accessibility &rarr; Subtitles &amp; Captioning on iPhone, and turn off <strong>Always show captions<\/strong> in your YouTube playback settings.<\/p><p>On a computer, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a>'s caption line has its own on/off switch in the toolbar popup, separate from YouTube's CC.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I turn off Live Caption on YouTube?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Live Caption isn't a YouTube feature. It's a captioning tool built into Android and Chrome that captions any audio playing on your device. On Android, press a volume button and tap the Live Caption icon under the volume slider. In Chrome, go to <strong>Settings &rarr; Accessibility<\/strong> and switch off <strong>Live Caption<\/strong>. YouTube's own captions are controlled separately with the CC button.<\/p><p>If you'd rather keep YouTube's captions and just put them somewhere better, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> shows them in a floating line you can place anywhere on the video.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I turn on subtitles on YouTube without the CC button?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>On a computer, press <kbd>C<\/kbd>, or open the Settings gear &rarr; <strong>Subtitles/CC<\/strong> and pick a track. In the app, tap the gear or &#8942; menu &rarr; <strong>Captions<\/strong>. If no tracks are listed, the video has no captions to show.<\/p><p>When a video has captions, <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> shows them in its glass line on its own, even with YouTube's CC switched off.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I force subtitles to appear on YouTube?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>In your YouTube settings, open <strong>Playback and performance<\/strong>, turn on <strong>Always show captions<\/strong> and tick <strong>Include auto-generated captions (when available)<\/strong>. Every video with captions then starts with them on.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> works the same way for its own line: once it's switched on, it shows captions on every video that has them, without pressing CC.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I get English subtitles on YouTube if they're not available?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>If the video has captions in another language, open Settings &rarr; <strong>Subtitles/CC<\/strong>, pick that track, then choose <strong>Auto-translate &rarr; English<\/strong>. If the video has no captions at all, there's nothing to translate.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> picks the track in your language when the video has one, and prefers captions a person wrote over auto-generated ones.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I turn subtitles on or off on YouTube on a smart TV?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Play a video, press select or up on the remote to bring up the player controls, and choose the <strong>CC<\/strong> button. On some TVs it's under the gear or &#8942; menu instead. The same button turns them off.<\/p><p>Watching on a computer instead? <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> lets you move YouTube's captions anywhere on the video and restyle them.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why are captions not available on some YouTube videos?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Captions only exist if the creator added them or YouTube generated them. Auto-captions can be missing when a video is brand new, has poor audio, music or lots of overlapping speech, is in a language YouTube can't auto-caption, or when the creator turned them off. Live streams often have no caption file to read.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> can only show captions YouTube has. When a video has none, its popup tells you so instead of leaving you guessing.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I fix YouTube captions not appearing or disappearing?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Common causes: CC was switched off, the next video has no captions, an ad interrupted playback, the app or browser needs an update, or an extension is interfering. Reload the page, press <kbd>C<\/kbd>, check Settings &rarr; Subtitles/CC for a track, and try a private window with extensions off. On Android, clearing the YouTube app's cache often helps.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> retries for you when YouTube's caption download fails, up to five times, and its popup shows what's happening (“Trying again (2 of 5)…”).<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What happened to community captions on YouTube?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>YouTube removed community contributions, the feature that let viewers write captions and translations for other people's videos, in September 2020, saying few people used it and it attracted spam. Creators can still add captions themselves or with help from people they trust.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> works with whatever captions a video has, including YouTube's auto-generated ones.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where should captions go on Reels and Shorts?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Keep them in the middle band of the frame. On Reels, Shorts and TikTok the bottom of the screen is covered by the description, buttons and username, and the right edge by the like and share buttons, so captions placed low get hidden. Many creators put them just below the center, near the speaker's face.<\/p><p>The same idea, captions near where your eyes already are, is what <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> brings to regular YouTube videos for viewers.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I edit captions on YouTube, including auto-generated ones?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Captions are edited in YouTube Studio: open <strong>Subtitles<\/strong>, pick the video and the language, then edit the text and timing. For auto-generated captions, choose <strong>Duplicate and edit<\/strong> to make an editable copy. Studio's subtitle editor is built for a computer; on a phone, open studio.youtube.com in your browser with the desktop site turned on.<\/p><p>Viewers with <a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> see your captions word by word in a glass line they can move, so accurate timing pays off.<\/p>"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why are YouTube's auto-generated captions in the wrong language?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "<p>Auto-captions are made in the language set for the video. If that's wrong, the captions come out as nonsense. Creators can fix it in YouTube Studio on the video's <strong>Details<\/strong> page under <strong>Video language<\/strong>. Viewers can't change it, but can use Auto-translate when a correct track exists.<\/p><p><a href=\"https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd\">CapFlow<\/a> picks the track in the viewer's language when the video has one.<\/p>"
+   }
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<main>
+  <nav class="crumbs"><a href="../">Babastuff</a> / <a href="../#ext">Chrome extensions</a> / CapFlow</nav>
+
+  <section class="card">
+    <div class="app">
+      <img src="../capflow.png" alt="CapFlow logo" width="64" height="64">
+      <div>
+        <h1>CapFlow</h1>
+        <p class="tag">Move YouTube captions anywhere on the screen</p>
+      </div>
+    </div>
+    <p>YouTube puts captions at the bottom of the video, so your eyes keep jumping between the picture and the text. CapFlow is a Chrome extension that moves the captions into a floating liquid-glass line you can drag anywhere on the video: next to the speaker, near the action, wherever you're already looking.</p>
+    <ul>
+      <li>Drag the caption line anywhere on the video, or set its position with a slider.</li>
+      <li>Words appear one at a time as they're spoken, and a new line starts when the speaker changes.</li>
+      <li>Set the text size, and how frosted or clear the glass is.</li>
+      <li>Works with YouTube's own captions, including auto-generated ones, in fullscreen and theatre mode.</li>
+      <li>Your first hour is free. After that, Lifetime Access is a one-time payment of $24.99.</li>
+    </ul>
+    <a class="btn" href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">Add CapFlow to Chrome</a>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-h">
+    <h2 id="faq-h">Caption placement FAQ</h2>
+    <p class="lede">Common questions about where captions sit on a YouTube video, and how to move them.</p>
+    <!-- FAQ:START -->
+    <h3 class="group">Moving captions on the screen</h3>
+    <details id="can-you-change-where-captions-appear-on-the-screen-on-youtub">
+      <summary><h4>Can you change where captions appear on the screen on YouTube?</h4></summary>
+      <div class="answer"><p>Only a little. YouTube's caption options let you change the font, color, size and background, but there's no setting for position: captions sit near the bottom of the video. On a computer you can drag the captions to another spot with your mouse, but YouTube doesn't keep that as a setting.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> adds the missing control. It shows the captions as one floating glass line that you place anywhere on the video, by dragging it in a preview or with a position slider, and it stays where you put it for every video.</p></div>
+    </details>
+    <details id="how-do-i-move-captions-on-youtube">
+      <summary><h4>How do I move captions on YouTube?</h4></summary>
+      <div class="answer"><p>On youtube.com in a computer browser, click and hold the captions while the video plays and drag them where you want. That only lasts for what you're watching; it isn't a saved setting.</p><p>For a position that sticks, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">install CapFlow</a>: open its toolbar popup, drag the caption in the preview or use the position slider, and every video uses that spot.</p></div>
+    </details>
+    <details id="how-do-i-move-captions-to-the-top-of-my-youtube-video">
+      <summary><h4>How do I move captions to the top of my YouTube video?</h4></summary>
+      <div class="answer"><p>YouTube has no “captions on top” option. On a computer you can drag the captions up to the top of the player by hand for the video you're watching.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> puts its caption line at the top right of the video by default, clear of the bottom of the frame where on-screen text, scores and name titles usually sit. You can move it anywhere else from its popup.</p></div>
+    </details>
+    <details id="why-are-youtube-subtitles-in-the-middle-of-the-screen">
+      <summary><h4>Why are YouTube subtitles in the middle of the screen?</h4></summary>
+      <div class="answer"><p>Some caption tracks carry their own position. Broadcast-style captions, common on YouTube TV and on uploads of TV shows, and some uploaded subtitle files tell the player where to draw each line, so they can land mid-screen over faces or the action. YouTube doesn't let viewers override that.</p><p>On youtube.com videos, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> ignores where the track wants the text and draws its caption line wherever you've put it. Turn YouTube's own CC off and only CapFlow's line shows.</p></div>
+    </details>
+    <details id="can-i-move-captions-in-the-youtube-app-on-iphone-or-android">
+      <summary><h4>Can I move captions in the YouTube app on iPhone or Android?</h4></summary>
+      <div class="answer"><p>The YouTube app has no caption position setting on iPhone or Android. You can change caption size and style, but not where they sit.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> is a Chrome extension for computers, so it doesn't run in the phone app. If you watch on a laptop or desktop, it lets you place captions anywhere on the video.</p></div>
+    </details>
+    <details id="can-i-move-closed-captions-on-youtube-tv">
+      <summary><h4>Can I move closed captions on YouTube TV?</h4></summary>
+      <div class="answer"><p>YouTube TV has no caption position setting. Live TV captions come from the broadcaster with their own placement, which is why they sometimes sit in the middle or at the top of the screen.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> runs on youtube.com, not YouTube TV, so it can't change those. For regular YouTube videos on a computer, it lets you choose exactly where captions go.</p></div>
+    </details>
+    <h3 class="group">Caption size, color and style</h3>
+    <details id="where-are-youtube-s-caption-settings">
+      <summary><h4>Where are YouTube&#x27;s caption settings?</h4></summary>
+      <div class="answer"><p>On a computer, start a video, click the Settings gear in the player, choose <strong>Subtitles/CC</strong>, then <strong>Options</strong>. There you can change the font, font color and size, background and window color and opacity, and the character edge style. Account-wide options, like always showing captions, are in your YouTube settings under <strong>Playback and performance</strong>.</p><p>Position isn't one of them. That's what <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> adds, along with its own text size and a glass background that runs from frosted to clear.</p></div>
+    </details>
+    <details id="how-do-i-change-caption-size-on-youtube-on-a-pc">
+      <summary><h4>How do I change caption size on YouTube on a PC?</h4></summary>
+      <div class="answer"><p>Click the Settings gear in the player, choose <strong>Subtitles/CC</strong> &rarr; <strong>Options</strong>, and change <strong>Font size</strong> (50% to 400%). You can also press <kbd>+</kbd> and <kbd>-</kbd> while captions are on.</p><p>With <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a>, the text size slider in its popup sets the size of its caption line, with a live preview, and you can move the line off the bottom of the video too.</p></div>
+    </details>
+    <details id="how-do-i-change-caption-size-on-youtube-mobile">
+      <summary><h4>How do I change caption size on YouTube mobile?</h4></summary>
+      <div class="answer"><p>On Android, open the YouTube app's Settings and tap <strong>Captions</strong>; it opens Android's caption preferences, where you set text size and style. On iPhone, caption style comes from iOS: <strong>Settings &rarr; Accessibility &rarr; Subtitles &amp; Captioning &rarr; Style</strong>.</p><p>On a computer, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> gives you a size slider and also lets you move the captions anywhere on the video.</p></div>
+    </details>
+    <details id="how-do-i-change-the-color-of-captions-on-youtube">
+      <summary><h4>How do I change the color of captions on YouTube?</h4></summary>
+      <div class="answer"><p>In the player, click Settings &rarr; <strong>Subtitles/CC</strong> &rarr; <strong>Options</strong> and change <strong>Font color</strong>, <strong>Background color</strong> and <strong>Window color</strong>. YouTube offers white, yellow, green, cyan, blue, magenta, red and black.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> takes a different approach: white text with a dark halo on a pane of liquid glass, so it stays readable on bright and dark scenes without a solid black box covering the picture.</p></div>
+    </details>
+    <h3 class="group">Turning captions on and off</h3>
+    <details id="why-do-i-have-captions-on-my-youtube-and-why-do-they-keep-tu">
+      <summary><h4>Why do I have captions on my YouTube, and why do they keep turning on?</h4></summary>
+      <div class="answer"><p>Usually because <strong>Always show captions</strong> is on in your YouTube settings (Playback and performance), or because your phone or TV has captions turned on in its accessibility settings, which YouTube follows. Turn off whichever is on, then press the CC button once on a video.</p><p>If you want captions but find them in the way at the bottom of the screen, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> lets you move them somewhere that works for you.</p></div>
+    </details>
+    <details id="how-do-i-turn-off-auto-captions-in-the-youtube-app">
+      <summary><h4>How do I turn off auto captions in the YouTube app?</h4></summary>
+      <div class="answer"><p>While a video plays, tap the player, then tap <strong>CC</strong> (or open the gear or &#8942; menu &rarr; Captions &rarr; Turn off captions). If they come back on every video, turn captions off in the app's Settings &rarr; Captions on Android, or in iOS Settings &rarr; Accessibility &rarr; Subtitles &amp; Captioning on iPhone, and turn off <strong>Always show captions</strong> in your YouTube playback settings.</p><p>On a computer, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a>'s caption line has its own on/off switch in the toolbar popup, separate from YouTube's CC.</p></div>
+    </details>
+    <details id="how-do-i-turn-off-live-caption-on-youtube">
+      <summary><h4>How do I turn off Live Caption on YouTube?</h4></summary>
+      <div class="answer"><p>Live Caption isn't a YouTube feature. It's a captioning tool built into Android and Chrome that captions any audio playing on your device. On Android, press a volume button and tap the Live Caption icon under the volume slider. In Chrome, go to <strong>Settings &rarr; Accessibility</strong> and switch off <strong>Live Caption</strong>. YouTube's own captions are controlled separately with the CC button.</p><p>If you'd rather keep YouTube's captions and just put them somewhere better, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> shows them in a floating line you can place anywhere on the video.</p></div>
+    </details>
+    <details id="how-do-i-turn-on-subtitles-on-youtube-without-the-cc-button">
+      <summary><h4>How do I turn on subtitles on YouTube without the CC button?</h4></summary>
+      <div class="answer"><p>On a computer, press <kbd>C</kbd>, or open the Settings gear &rarr; <strong>Subtitles/CC</strong> and pick a track. In the app, tap the gear or &#8942; menu &rarr; <strong>Captions</strong>. If no tracks are listed, the video has no captions to show.</p><p>When a video has captions, <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> shows them in its glass line on its own, even with YouTube's CC switched off.</p></div>
+    </details>
+    <details id="how-do-i-force-subtitles-to-appear-on-youtube">
+      <summary><h4>How do I force subtitles to appear on YouTube?</h4></summary>
+      <div class="answer"><p>In your YouTube settings, open <strong>Playback and performance</strong>, turn on <strong>Always show captions</strong> and tick <strong>Include auto-generated captions (when available)</strong>. Every video with captions then starts with them on.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> works the same way for its own line: once it's switched on, it shows captions on every video that has them, without pressing CC.</p></div>
+    </details>
+    <details id="how-do-i-get-english-subtitles-on-youtube-if-they-re-not-ava">
+      <summary><h4>How do I get English subtitles on YouTube if they&#x27;re not available?</h4></summary>
+      <div class="answer"><p>If the video has captions in another language, open Settings &rarr; <strong>Subtitles/CC</strong>, pick that track, then choose <strong>Auto-translate &rarr; English</strong>. If the video has no captions at all, there's nothing to translate.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> picks the track in your language when the video has one, and prefers captions a person wrote over auto-generated ones.</p></div>
+    </details>
+    <details id="how-do-i-turn-subtitles-on-or-off-on-youtube-on-a-smart-tv">
+      <summary><h4>How do I turn subtitles on or off on YouTube on a smart TV?</h4></summary>
+      <div class="answer"><p>Play a video, press select or up on the remote to bring up the player controls, and choose the <strong>CC</strong> button. On some TVs it's under the gear or &#8942; menu instead. The same button turns them off.</p><p>Watching on a computer instead? <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> lets you move YouTube's captions anywhere on the video and restyle them.</p></div>
+    </details>
+    <h3 class="group">When captions are missing or broken</h3>
+    <details id="why-are-captions-not-available-on-some-youtube-videos">
+      <summary><h4>Why are captions not available on some YouTube videos?</h4></summary>
+      <div class="answer"><p>Captions only exist if the creator added them or YouTube generated them. Auto-captions can be missing when a video is brand new, has poor audio, music or lots of overlapping speech, is in a language YouTube can't auto-caption, or when the creator turned them off. Live streams often have no caption file to read.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> can only show captions YouTube has. When a video has none, its popup tells you so instead of leaving you guessing.</p></div>
+    </details>
+    <details id="how-do-i-fix-youtube-captions-not-appearing-or-disappearing">
+      <summary><h4>How do I fix YouTube captions not appearing or disappearing?</h4></summary>
+      <div class="answer"><p>Common causes: CC was switched off, the next video has no captions, an ad interrupted playback, the app or browser needs an update, or an extension is interfering. Reload the page, press <kbd>C</kbd>, check Settings &rarr; Subtitles/CC for a track, and try a private window with extensions off. On Android, clearing the YouTube app's cache often helps.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> retries for you when YouTube's caption download fails, up to five times, and its popup shows what's happening (“Trying again (2 of 5)…”).</p></div>
+    </details>
+    <details id="what-happened-to-community-captions-on-youtube">
+      <summary><h4>What happened to community captions on YouTube?</h4></summary>
+      <div class="answer"><p>YouTube removed community contributions, the feature that let viewers write captions and translations for other people's videos, in September 2020, saying few people used it and it attracted spam. Creators can still add captions themselves or with help from people they trust.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> works with whatever captions a video has, including YouTube's auto-generated ones.</p></div>
+    </details>
+    <h3 class="group">For creators</h3>
+    <details id="where-should-captions-go-on-reels-and-shorts">
+      <summary><h4>Where should captions go on Reels and Shorts?</h4></summary>
+      <div class="answer"><p>Keep them in the middle band of the frame. On Reels, Shorts and TikTok the bottom of the screen is covered by the description, buttons and username, and the right edge by the like and share buttons, so captions placed low get hidden. Many creators put them just below the center, near the speaker's face.</p><p>The same idea, captions near where your eyes already are, is what <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> brings to regular YouTube videos for viewers.</p></div>
+    </details>
+    <details id="how-do-i-edit-captions-on-youtube-including-auto-generated-o">
+      <summary><h4>How do I edit captions on YouTube, including auto-generated ones?</h4></summary>
+      <div class="answer"><p>Captions are edited in YouTube Studio: open <strong>Subtitles</strong>, pick the video and the language, then edit the text and timing. For auto-generated captions, choose <strong>Duplicate and edit</strong> to make an editable copy. Studio's subtitle editor is built for a computer; on a phone, open studio.youtube.com in your browser with the desktop site turned on.</p><p>Viewers with <a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> see your captions word by word in a glass line they can move, so accurate timing pays off.</p></div>
+    </details>
+    <details id="why-are-youtube-s-auto-generated-captions-in-the-wrong-langu">
+      <summary><h4>Why are YouTube&#x27;s auto-generated captions in the wrong language?</h4></summary>
+      <div class="answer"><p>Auto-captions are made in the language set for the video. If that's wrong, the captions come out as nonsense. Creators can fix it in YouTube Studio on the video's <strong>Details</strong> page under <strong>Video language</strong>. Viewers can't change it, but can use Auto-translate when a correct track exists.</p><p><a href="https://chromewebstore.google.com/detail/capflow-glass-captions-fo/laidlafdnkpkoploihogmbpapdkcfifd">CapFlow</a> picks the track in the viewer's language when the video has one.</p></div>
+    </details>
+    <!-- FAQ:END -->
+  </section>
+
+  <footer>
+    Support and questions: <a href="mailto:support@babastuff.com">support@babastuff.com</a><br>
+    <a href="../terms/">Terms of sale</a> &middot; <a href="../privacy/">Privacy policy</a><br>
+    &copy; 2026 Babastuff
+  </footer>
+</main>
+</body>
+</html>
